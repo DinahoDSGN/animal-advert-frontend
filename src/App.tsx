@@ -1,26 +1,33 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import './styles/sidebar.css';
+import './styles/home.css';
+import './styles/auth.css';
+import Sidebar from './components/Sidebar';
+import Auth from './pages/Auth';
+import {BrowserRouter, Route} from 'react-router-dom';
+import Home from './pages/Home';
+require('dotenv').config()
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    return (
+        <div className="App">
+
+
+            <div className="container">
+
+                <BrowserRouter>
+                    <Route path="/auth" component={Auth}/>
+                    <div>
+                        <Sidebar/>
+                        <Route path="/" exact component={Home}/>
+                    </div>
+                </BrowserRouter>
+            </div>
+
+        </div>
+    );
 }
 
 export default App;

@@ -1,0 +1,77 @@
+/*SIDEBAR and TOOLBAR*/
+
+.sidebar {
+    z-index: 999;
+    left: 0;
+    position: fixed;
+    width: 200px;
+    background-color: var(--bg-color-grey);
+    height: 100vh;
+}
+
+.sidebar-nav {}
+
+.sidebar-nav-panel {
+    position: relative;
+    text-decoration: none;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.sidebar-profile {
+    cursor: pointer;
+    width: 100%;
+}
+
+#sidebar-profile-photo {
+    width: 50px;
+    height: 50px;
+    border-radius: 100px;
+}
+
+.sidebar-profile-name {
+    font-style: italic;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 13px;
+    margin-left: 4px;
+    color: var(--text-grey);
+}
+
+.heads {
+    font-style: normal;
+    font-weight: 300;
+    font-size: 11px;
+    line-height: 11px;
+    color: var(--text-grey);
+}
+
+.sidebar-nav-panel ul {
+    list-style: none;
+    padding: 3px 0 3px 3px;
+}
+
+.sidebar-item {
+    padding: 2px 5px 5px 10px;
+    width: 98%;
+    margin-top: 2px;
+    cursor: pointer;
+}
+
+.sidebar-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    transition: .3s;
+}
+
+.sidebar-item a {
+    font-style: normal;
+    font-weight: 900;
+    font-size: 11px;
+    margin-left: 4px;
+    color: var(--text-white);
+}
+
+#sidebar-icon {
+    height: 15px;
+}
