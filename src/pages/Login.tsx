@@ -1,28 +1,41 @@
+import axios from 'axios';
 import React, {SyntheticEvent, useState} from 'react';
+import Cookies from 'js-cookie'
+import { Redirect } from 'react-router-dom';
 
 const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [data, setData] = useState([]);
+    const [redirect, setRedirect] = useState(false);
+    const [token, setToken] = useState();
 
     const API_URL = "http://localhost:8080/";
 
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault()
 
-        let ok = await fetch("http://localhost:8080/auth/signin", {
-            method: "POST",
-            // headers: {"Content-Type" : "application/json"},
+        const rawResponse = await fetch("http://localhost:8080/auth/signin", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
             // credentials: "include",
             body: JSON.stringify({
                 username,
                 password
             })
         })
-            .then(res => res.json())
-            .then(data => setData(data.id))
 
-        alert(data)
+        const content = await rawResponse.json();
+
+        document.cookie = `jwttoken=Bearer=${content.token}`
+
+        setRedirect(true)
+    }
+
+    if (redirect){
+        return <Redirect to="/"/>
     }
 
     return (

@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import './styles/sidebar.css';
-import './styles/home.css';
 import './styles/auth.css';
 import Sidebar from './components/Sidebar';
 import Auth from './pages/Auth';

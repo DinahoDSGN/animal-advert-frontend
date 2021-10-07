@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import profilePhoto from '../img/photo.jpg';
 import iconProfile from '../img/icons/user.png';
 import iconAd from '../img/icons/classified.png';
@@ -10,6 +10,25 @@ import iconAbout from '../img/icons/info.png';
 import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
+    const [username, setUsername] = useState("")
+
+    useEffect( () => {
+        (
+            async () => {
+                const response = await fetch("http://localhost:8080/api/user/me", {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                })
+
+                const content = await response.json();
+
+                // setUsername(content.data.username);
+            }
+        )();
+    });
+
     return (
         <div className="sidebar g-0">
             <div className="sidebar-nav-panel d-flex align-items-center" style={{height: "100px"}}>
@@ -17,7 +36,7 @@ const Sidebar = () => {
                     <div className="sidebar-profile-item">
                         <img id="sidebar-profile-photo" src={profilePhoto} alt=""/>
                     <span className="sidebar-profile-name">
-                        #dinahodsgn
+                        {username}
                     </span>
                     </div>
                 </div>
