@@ -125,6 +125,7 @@ const Home = () => {
                     </div>
                 </section>
                 <div className="content-wrapper-content row g-0">
+
                     {posts.map(post=>
                         <div className="adv-wrapper row g-0">
                             <div className="block-photo col-auto">

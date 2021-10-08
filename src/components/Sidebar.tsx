@@ -64,7 +64,7 @@ const Sidebar = () => {
                     <li className="sidebar-item"><img id="sidebar-icon" className="icon-color"
                                                       src={iconAbout}/> <a href="#">About</a></li>
                     <li className="sidebar-item"><img id="sidebar-icon" className="icon-color"
-                                                      src={iconSettings}/> <a href="#">Settings</a></li>
+                                                      src={iconSettings}/> <Link to="/settings">Settings</Link></li>
                 </ul>
             </div>
         </div>

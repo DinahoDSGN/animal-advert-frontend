@@ -6,6 +6,8 @@ import Sidebar from './components/Sidebar';
 import Auth from './pages/Auth';
 import {BrowserRouter, Route} from 'react-router-dom';
 import Home from './pages/Home';
+import AdPage from "./pages/AdPage";
+import ProfileSettings from "./pages/ProfileSettings";
 require('dotenv').config()
 
 function App() {
@@ -21,6 +23,8 @@ function App() {
                     <div>
                         <Sidebar/>
                         <Route path="/" exact component={Home}/>
+                        <Route path="/ad" exact component={AdPage}/>
+                        <Route path="/settings" component={ProfileSettings}/>
                     </div>
                 </BrowserRouter>
             </div>

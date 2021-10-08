@@ -1,0 +1,105 @@
+.settings{
+
+}
+
+.settings-wrapper{
+    padding: 10px;
+    width: 60%;
+}
+
+.block{
+    margin-top: 5px;
+    padding: 5px;
+}
+
+.profile {
+    cursor: pointer;
+    width: 100%;
+}
+
+.profile-item{
+    padding: 15px 0 5px 15px;
+}
+
+#profile-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+}
+
+.profile-text{
+    padding: 15px 10px;
+    width: 30%;
+}
+
+.profile-fullname{
+    font-weight: 900;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+
+    color: #E5E5E5;
+}
+
+.profile-name {
+    font-style: italic;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 13px;
+    color: var(--text-grey);
+}
+
+#title{
+    font-weight: 900;
+    font-size: 12px;
+    color: #E3E3E3;
+    padding: 5px 10px;
+}
+
+.form-group {
+    padding: 0px 0px 20px 10px;
+    width: 100%;
+}
+
+.form-group label {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 11px;
+    margin-top: 5px;
+    color: var(--white);
+}
+
+form span a {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    color: var(--grey);
+}
+
+.form-control {
+    width: 200px;
+    height: 30px;
+    border: 0;
+    margin-top: 2px;
+    background: var(--grey);
+    border-radius: var(--border-radius);
+    font-size: 12px;
+    line-height: 9px;
+
+    color: #9F9F9F;
+
+}
+
+.submit-btn {
+    position: relative;
+    margin-left: 5px;
+    padding: 0;
+    width: 160px;
+    height: 25px;
+    font-size: 12px;
+    text-align: center;
+    vertical-align: middle;
+    border: 0;
+    background: var(--blue);
+    border-radius: var(--border-radius);
+}
