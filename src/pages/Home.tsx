@@ -1,17 +1,19 @@
-import React, {useEffect, useState} from 'react';
+import React, {SyntheticEvent, useEffect, useState} from 'react';
 import iconLoupe from '../img/icons/loupe.png';
 import iconBurger from '../img/icons/menu-burger.png';
 import iconGrid from '../img/icons/menu-grid.png';
-import profilePhoto from '../img/photo.jpg';
-import iconPlaceholder from '../img/icons/placeholder.png';
-import iconPawprint from '../img/icons/pawprint.png';
-import iconDollar from '../img/icons/dollar.png';
-import iconGender from '../img/icons/gender.png';
 import axios from 'axios';
 import '../styles/home.css';
+import {Link} from 'react-router-dom';
+import AdWrapper from "../components/AdWrapper";
+import { once } from 'stream';
 
 const Home = () => {
-    const [posts, setPosts] = useState([])
+    const [posts, setPosts] = useState([] as any)
+    const [unsortedPosts, setUnsortedPosts] = useState([] as any)
+
+    const [moneyFrom, setMoneyFrom] = useState("")
+    const [moneyTo, setMoneyTo] = useState("")
 
     useEffect(() => {
         (
@@ -19,13 +21,44 @@ const Home = () => {
                 await axios.get("http://localhost:8080/api/adv/")
                     .then(res => {
                         setPosts(res.data["data"])
+                        setUnsortedPosts(posts)
                     })
             }
         )()
     }, [])
 
-    // console.log(posts)
+    if (parseInt(moneyFrom, 10) >= 0 && parseInt(moneyTo, 10) >= parseInt(moneyFrom, 10)) {
+        const rangedPosts = sortByPriceRange(parseInt(moneyFrom, 10), parseInt(moneyTo, 10))
+        setPosts(rangedPosts)
+        setMoneyFrom('')
+        setMoneyTo('')
+    }
 
+    function sortByPriceRange(f: number, t: number) {
+        let arr = [] as any
+        [...posts].map(post => {
+            if (post["Animal"]["price"] >= f &&
+                post["Animal"]["price"] <= t) {
+                arr.push(post)
+            }
+        })
+
+        return arr
+    }
+
+    const sortByPriceDesc = () => {
+        const sorted = [...posts].sort((a, b) => b["Animal"]["price"] - a["Animal"]["price"]);
+        setPosts(sorted)
+    }
+
+    const sortByPriceAsc = () => {
+        const sorted = [...posts].sort((b, a) => b["Animal"]["price"] - a["Animal"]["price"]);
+        setPosts(sorted)
+    }
+
+    const sortByDefault = () => {
+        setPosts(unsortedPosts)
+    }
 
     return (
         <div className="content-wrapper d-flex justify-content-center">
@@ -52,9 +85,11 @@ const Home = () => {
                             <div className="filter row g-0" style={{width: "170px"}}>
                                 <span id="filter-head">Price</span>
                                 <input type="search" className="form-control" placeholder="From" aria-label="Search"
-                                       aria-describedby="search-addon"/>
+                                       aria-describedby="search-addon"
+                                       onChange={e => setMoneyFrom(e.target.value)}/>
                                 <input type="search" className="form-control" placeholder="To" aria-label="Search"
-                                       aria-describedby="search-addon"/>
+                                       aria-describedby="search-addon"
+                                       onChange={e => setMoneyTo(e.target.value)}/>
                             </div>
                             <div className="filter row g-0" style={{width: "130px"}}>
                                 <span id="filter-head">Breed</span>
@@ -97,9 +132,9 @@ const Home = () => {
                                 Filter
                             </button>
                             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a className="dropdown-item" href="#">By rating</a>
-                                <a className="dropdown-item" href="#">By price</a>
-                                <a className="dropdown-item" href="#">By asd</a>
+                                <a className="dropdown-item" onClick={sortByDefault}>Default</a>
+                                <a className="dropdown-item" onClick={sortByPriceAsc}>By price ascending</a>
+                                <a className="dropdown-item" onClick={sortByPriceDesc}>By price descending</a>
                             </div>
                         </div>
                     </div>
@@ -126,59 +161,7 @@ const Home = () => {
                 </section>
                 <div className="content-wrapper-content row g-0">
 
-                    {posts.map(post=>
-                        <div className="adv-wrapper row g-0">
-                            <div className="block-photo col-auto">
-                                <img src={profilePhoto} alt=""/>
-                            </div>
-                            <div className="block-info col-9">
-                                <div className="adv-title" data-toggle="modal" data-target=".bd-example-modal-lg">
-                                    <span id="name">{post["Animal"]["name"]}</span>
-                                    <span id="spec">{post["Animal"]["type"]}</span>
-                                </div>
-                                <div className="adv-location">
-                            <span className="location">
-                                <img id="adv-icon" className="col icon-color" src={iconPlaceholder}/>
-                                <span id="location">{post["location"]}</span>
-                            </span>
-                                </div>
-                                <div className="adv-types row g-0">
-                            <span className="spec-block col-auto">
-                                <span className="spec row-auto">
-                                    <img id="adv-icon" className="col icon-color" src={iconPawprint}/>
-                                    <span id="spec-type">Breed</span>
-                                </span>
-                                <span className="spec row">
-                                    <span id="spec-info">{post["Animal"]["Breed"]["name"]}</span>
-                                </span>
-                            </span>
-                                    <span className="spec-block col-auto">
-                                <span className="spec row-auto">
-                                    <img id="adv-icon" className="col icon-color" src={iconGender}/>
-                                    <span id="spec-type">Gender</span>
-                                </span>
-                                <span className="spec row">
-                                    <span id="spec-info">{post["Animal"]["Breed"]["gender"]}</span>
-                                </span>
-                            </span>
-                                    <span className="spec-block col-auto">
-                                <span className="spec row-auto">
-                                    <img id="adv-icon" className="col icon-color" src={iconDollar}/>
-                                    <span id="spec-type">Price</span>
-                                </span>
-                                <span className="spec row">
-                                    <span id="spec-info">{post["Animal"]["price"]}</span>
-                                </span>
-                            </span>
-                                </div>
-                                <div className="adv-desc row-auto g-0">
-                            <span className="desc">
-                                {post["description"]}
-                            </span>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                    {<AdWrapper posts={posts}/>}
 
                 </div>
             </div>

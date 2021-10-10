@@ -121,6 +121,7 @@
     font-weight: 400;
     font-size: 13px;
     line-height: 15px;
+    cursor: pointer;
 
     color: var(--text-grey);
 }

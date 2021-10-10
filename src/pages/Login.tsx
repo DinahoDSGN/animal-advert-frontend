@@ -7,9 +7,6 @@ const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [redirect, setRedirect] = useState(false);
-    const [token, setToken] = useState();
-
-    const API_URL = "http://localhost:8080/";
 
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault()

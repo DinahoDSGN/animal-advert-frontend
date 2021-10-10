@@ -1,5 +1,6 @@
 import React, {SyntheticEvent, useState} from 'react';
 import {Redirect} from "react-router-dom";
+import '../styles/auth.css';
 import Login from './Login';
 import Register from './Register';
 

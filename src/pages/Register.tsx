@@ -1,13 +1,13 @@
 import React, {SyntheticEvent, useState} from 'react';
 import Login from './Login';
 import Auth from './Auth';
+import { Redirect } from 'react-router-dom';
 
 const Register = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
-    const API_URL = "http://localhost:8080/";
+    const [up, setUp] = useState(false);
 
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault()
@@ -25,6 +25,12 @@ const Register = () => {
             alert("SOMETHING GOT WRONG")
             return
         }
+
+        setUp(true)
+    }
+
+    if (up){
+        return <Redirect to="/auth"/>
     }
 
     return (
