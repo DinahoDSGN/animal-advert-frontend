@@ -48,7 +48,7 @@ const Home = () => {
             setTypeData(Array.from(new Set(temp)))
         }
         if (val === "breed") {
-            for (let i = 0; i < posts.length; i++) temp[i] = posts[i]["animal"]["breed"]["name"]
+            for (let i = 0; i < posts.length; i++) temp[i] = posts[i]["animal"]["type"]["name"]
             setBreedData(Array.from(new Set(temp)))
         }
         if (val === "gender") {

@@ -41,7 +41,7 @@ const AdWrapper = (props: { posts: [] }) => {
                                     <span id="spec-type">Breed</span>
                                 </span>
                                 <span className="spec row">
-                                    <span id="spec-info">{post["animal"]["breed"]["name"]}</span>
+                                    <span id="spec-info">{post["animal"]["type"]}</span>
                                 </span>
                             </span>
                                 <span className="spec-block col-auto">
@@ -65,7 +65,7 @@ const AdWrapper = (props: { posts: [] }) => {
                             </div>
                             <div className="adv-desc row-auto g-0">
                             <span className="desc">
-                                {post["description"]}
+                                desc
                             </span>
                             </div>
                         </div>
