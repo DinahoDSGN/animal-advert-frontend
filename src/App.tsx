@@ -9,6 +9,10 @@ import ProfileSettings from "./pages/ProfileSettings";
 import MyAds from "./pages/MyAds";
 import Cookies from "js-cookie";
 import Logout from './pages/Logout';
+import Profile from "./pages/Profile";
+import About from "./pages/About";
+import Notifications from "./pages/Notifications";
+import AdCreate from "./components/AdCreate";
 
 function App() {
     const [userId, setUserId] = useState(0)
@@ -16,16 +20,12 @@ function App() {
     const [name, setName] = useState("")
     const [lastname, setLastname] = useState("")
     const [isAuth, setIsAuth] = useState(false)
+    let auth;
 
     useEffect(() => {
         (
             async () => {
-                const response = await fetch("http://localhost:8080/api/user/me", {
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                })
+                const response = await fetch("http://localhost:8080/api/user/me")
 
                 const content = await response.json();
 
@@ -36,12 +36,19 @@ function App() {
 
                 let jwt = Cookies.get("jwttoken")
                 if (jwt != null) {
+                    console.log("authed")
                     setIsAuth(true)
-                    console.log(true)
-                    return
+                    auth = true
+                    // return
+                }else{
+                    console.log("unauthed")
+                    setIsAuth(false)
+                    auth = false
                 }
 
-                setIsAuth(false)
+                console.log(isAuth)
+                console.log("auth = " + auth)
+
             }
         )();
     }, []);
@@ -56,6 +63,7 @@ function App() {
                                 <Sidebar username={username}/>
                                 <Route path="/" exact component={Home}/>
                                 <Route path="/ad" exact component={Home}/>
+                                <Route path="/ad/create" component={AdCreate}/>
                                 <Route path="/ad/:id" sensitive={true} component={AdPage}/>
                                 <Route path="/settings" component={() => <ProfileSettings
                                     userId={userId}
@@ -65,15 +73,16 @@ function App() {
                                 />}/>
                                 <Route path="/myads" component={() => <MyAds userId={userId}/>}/>
                                 <Route path="/logout" component={Logout}/>
-                                <Route path="/about" />
-                                <Route path="/profile" />
-                                <Route path="/notifications" />
+                                <Route path="/profile" component={Profile}/>
+                                <Route path="/about" component={About}/>
+                                <Route path="/notifications" component={Notifications}/>
+
                             </div>
                             :
-                            <>
+                            <div>
+                                {/*<Redirect to="/auth"/>*/}
                                 <Route path="/auth" component={Auth}/>
-                                <Redirect to="/auth"/>
-                            </>
+                            </div>
                     }
                 </BrowserRouter>
             </div>

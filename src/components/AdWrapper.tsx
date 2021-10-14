@@ -10,9 +10,7 @@ const AdWrapper = (props: { posts: [] }) => {
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
-
         setPosts(props.posts)
-        console.log(posts)
     })
 
     return (
@@ -27,7 +25,7 @@ const AdWrapper = (props: { posts: [] }) => {
                             <Link to={"ad/" + post["ad_id"]}>
                                 <div className="adv-title" data-toggle="modal" data-target=".bd-example-modal-lg">
                                     <span id="name">{post["title"]}</span>
-                                    <span id="spec">{post["Animal"]["type"]}</span>
+                                    <span id="spec">{post["animal"]["type"]}</span>
                                 </div>
                             </Link>
                             <div className="adv-location">
@@ -43,7 +41,7 @@ const AdWrapper = (props: { posts: [] }) => {
                                     <span id="spec-type">Breed</span>
                                 </span>
                                 <span className="spec row">
-                                    <span id="spec-info">{post["Animal"]["Breed"]["name"]}</span>
+                                    <span id="spec-info">{post["animal"]["breed"]["name"]}</span>
                                 </span>
                             </span>
                                 <span className="spec-block col-auto">
@@ -52,7 +50,7 @@ const AdWrapper = (props: { posts: [] }) => {
                                     <span id="spec-type">Gender</span>
                                 </span>
                                 <span className="spec row">
-                                    <span id="spec-info">{post["Animal"]["Breed"]["gender"]}</span>
+                                    <span id="spec-info">{post["animal"]["gender"] ? "Female" : "Male"}</span>
                                 </span>
                             </span>
                                 <span className="spec-block col-auto">
@@ -61,7 +59,7 @@ const AdWrapper = (props: { posts: [] }) => {
                                     <span id="spec-type">Price</span>
                                 </span>
                                 <span className="spec row">
-                                    <span id="spec-info">{post["Animal"]["price"]}</span>
+                                    <span id="spec-info">{post["animal"]["price"]}</span>
                                 </span>
                             </span>
                             </div>

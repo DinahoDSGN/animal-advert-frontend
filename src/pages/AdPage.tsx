@@ -46,7 +46,7 @@ const AdPage = (props: any) => {
                                                 <div className="block adv-title" data-toggle="modal"
                                                      data-target=".bd-example-modal-lg">
                                                     <span id="name">{post["title"]}</span>
-                                                    <span id="spec">{post["Animal"]["type"]}</span>
+                                                    <span id="spec">{post["animal"]["type"]}</span>
                                                 </div>
                                                 <div className="block adv-types row g-0">
                                     <span className="spec-block col-auto">
@@ -56,7 +56,7 @@ const AdPage = (props: any) => {
                                             <span id="spec-type">Breed</span>
                                         </span>
                                         <span className="spec row">
-                                            <span id="spec-info">{post["Animal"]["Breed"]["name"]}</span>
+                                            <span id="spec-info">{post["animal"]["breed"]["name"]}</span>
                                         </span>
                                     </span>
                                                     <span className="spec-block col-auto">
@@ -66,7 +66,7 @@ const AdPage = (props: any) => {
                                             <span id="spec-type">Gender</span>
                                         </span>
                                         <span className="spec row">
-                                            <span id="spec-info">{post["Animal"]["gender"] ? "Female" : "Male"}</span>
+                                            <span id="spec-info">{post["animal"]["gender"] ? "Female" : "Male"}</span>
                                         </span>
                                     </span>
                                                     <span className="spec-block col-auto">
@@ -76,7 +76,7 @@ const AdPage = (props: any) => {
                                             <span id="spec-type">Color</span>
                                         </span>
                                         <span className="spec row">
-                                            <span id="spec-info">{post["Animal"]["color"]}</span>
+                                            <span id="spec-info">{post["animal"]["color"]}</span>
                                         </span>
                                     </span>
                                                     <span className="spec-block col-auto">
@@ -86,7 +86,7 @@ const AdPage = (props: any) => {
                                             <span id="spec-type">Vaccinated</span>
                                         </span>
                                         <span className="spec row">
-                                            <span id="spec-info">{post["Animal"]["vaccinated"] ? "Yes" : "No"}</span>
+                                            <span id="spec-info">{post["animal"]["vaccinated"] ? "Yes" : "No"}</span>
                                         </span>
                                     </span>
                                                     <span className="spec-block col-auto">
@@ -95,7 +95,7 @@ const AdPage = (props: any) => {
                                             <span id="spec-type">Spayed</span>
                                         </span>
                                         <span className="spec row">
-                                            <span id="spec-info">{post["Animal"]["spayed"] ? "Yes" : "No"}</span>
+                                            <span id="spec-info">{post["animal"]["spayed"] ? "Yes" : "No"}</span>
                                         </span>
                                     </span>
                                                     <span className="spec-block col-auto">
@@ -105,7 +105,7 @@ const AdPage = (props: any) => {
                                             <span id="spec-type">Passport</span>
                                         </span>
                                         <span className="spec row">
-                                            <span id="spec-info">{post["Animal"]["passport"] ? "Yes" : "No"}</span>
+                                            <span id="spec-info">{post["animal"]["passport"] ? "Yes" : "No"}</span>
                                         </span>
                                     </span>
                                                     <span className="spec-block col-auto">
@@ -115,7 +115,7 @@ const AdPage = (props: any) => {
                                             <span id="spec-type">Price</span>
                                         </span>
                                         <span className="spec row">
-                                            <span id="spec-info">{post["Animal"]["price"]}</span>
+                                            <span id="spec-info">{post["animal"]["price"]}</span>
                                         </span>
                                     </span>
                                                 </div>

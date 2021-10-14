@@ -4,13 +4,17 @@ import iconBurger from '../img/icons/menu-burger.png';
 import iconGrid from '../img/icons/menu-grid.png';
 import axios from 'axios';
 import '../styles/home.css';
-import {Link} from 'react-router-dom';
 import AdWrapper from "../components/AdWrapper";
-import { once } from 'stream';
+import AdCreate from "../components/AdCreate";
+import {Link, Redirect} from 'react-router-dom';
 
 const Home = () => {
     const [posts, setPosts] = useState([] as any)
     const [unsortedPosts, setUnsortedPosts] = useState([] as any)
+
+    const [typeData, setTypeData] = useState([])
+    const [breedData, setBreedData] = useState([])
+    const [genderData, setGenderData] = useState([])
 
     const [moneyFrom, setMoneyFrom] = useState("")
     const [moneyTo, setMoneyTo] = useState("")
@@ -18,9 +22,12 @@ const Home = () => {
     useEffect(() => {
         (
             async () => {
-                await axios.get("http://localhost:8080/api/adv/")
+                await axios.get("http://localhost:8080/api/adv/all")
                     .then(res => {
                         setPosts(res.data["data"])
+                        sortByUniqueKeys({posts: posts}, "breed")
+                        sortByUniqueKeys({posts: posts}, "gender")
+                        sortByUniqueKeys({posts: posts}, "type")
                         setUnsortedPosts(posts)
                     })
             }
@@ -34,30 +41,98 @@ const Home = () => {
         setMoneyTo('')
     }
 
+    function sortByUniqueKeys({posts}: { posts: any }, val: string) {
+        let temp = [] as any;
+        if (val === "type") {
+            for (let i = 0; i < posts.length; i++) temp[i] = posts[i]["animal"]["type"]
+            setTypeData(Array.from(new Set(temp)))
+        }
+        if (val === "breed") {
+            for (let i = 0; i < posts.length; i++) temp[i] = posts[i]["animal"]["breed"]["name"]
+            setBreedData(Array.from(new Set(temp)))
+        }
+        if (val === "gender") {
+            for (let i = 0; i < posts.length; i++) {
+                if (posts[i]["animal"]["gender"] === true) {
+                    temp[i] = "Female"
+                } else {
+                    temp[i] = "Male"
+                }
+
+            }
+            setGenderData(Array.from(new Set(temp)))
+        }
+    }
+
     function sortByPriceRange(f: number, t: number) {
         let arr = [] as any
         [...posts].map(post => {
-            if (post["Animal"]["price"] >= f &&
-                post["Animal"]["price"] <= t) {
+            if (post["animal"]["price"] >= f &&
+                post["animal"]["price"] <= t) {
                 arr.push(post)
             }
         })
 
-        return arr
+    }
+
+    const createAdHandler = () => {
+
     }
 
     const sortByPriceDesc = () => {
-        const sorted = [...posts].sort((a, b) => b["Animal"]["price"] - a["Animal"]["price"]);
+        const sorted = [...posts].sort((a, b) => b["animal"]["price"] - a["animal"]["price"]);
         setPosts(sorted)
     }
 
     const sortByPriceAsc = () => {
-        const sorted = [...posts].sort((b, a) => b["Animal"]["price"] - a["Animal"]["price"]);
+        const sorted = [...posts].sort((b, a) => b["animal"]["price"] - a["animal"]["price"]);
         setPosts(sorted)
     }
 
     const sortByDefault = () => {
         setPosts(unsortedPosts)
+    }
+
+    const sortByValue = async (e: SyntheticEvent) => {
+        e.preventDefault()
+        setPosts(unsortedPosts)
+
+        let param = e.currentTarget
+
+        if (param.id == "sex"){
+            await axios.get(("http://localhost:8080/api/adv/sort?sex=" + param.textContent).toLowerCase(), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(res => {
+                    setPosts(res.data["data"])
+                })
+        }
+
+        if (param.id == "specify"){
+            await axios.get(("http://localhost:8080/api/adv/sort?specify=" + param.textContent).toLowerCase(), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(res => {
+                    setPosts(res.data["data"])
+                })
+        }
+
+        if (param.id == "breed"){
+            await axios.get(("http://localhost:8080/api/adv/sort?breed=" + param.textContent).toLowerCase(), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(res => {
+                    setPosts(res.data["data"])
+                })
+        }
+
+
     }
 
     return (
@@ -76,9 +151,13 @@ const Home = () => {
                                         All
                                     </button>
                                     <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a className="dropdown-item" href="#">Cat 1</a>
-                                        <a className="dropdown-item" href="#">Dog 2</a>
-                                        <a className="dropdown-item" href="#">Dragon 3</a>
+                                        {
+                                            typeData.map(type =>
+                                                <>
+                                                    <a className="dropdown-item" id="specify" onClick={sortByValue}>{type}</a>
+                                                </>
+                                            )
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -86,10 +165,10 @@ const Home = () => {
                                 <span id="filter-head">Price</span>
                                 <input type="search" className="form-control" placeholder="From" aria-label="Search"
                                        aria-describedby="search-addon"
-                                       onChange={e => setMoneyFrom(e.target.value)}/>
+                                       onChange={e => setMoneyFrom(e.target.value.toLowerCase)}/>
                                 <input type="search" className="form-control" placeholder="To" aria-label="Search"
                                        aria-describedby="search-addon"
-                                       onChange={e => setMoneyTo(e.target.value)}/>
+                                       onChange={e => setMoneyTo(e.target.value.toLowerCase)}/>
                             </div>
                             <div className="filter row g-0" style={{width: "130px"}}>
                                 <span id="filter-head">Breed</span>
@@ -100,9 +179,13 @@ const Home = () => {
                                         All
                                     </button>
                                     <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a className="dropdown-item" href="#">Breed 1</a>
-                                        <a className="dropdown-item" href="#">Breed 2</a>
-                                        <a className="dropdown-item" href="#">Breed 3</a>
+                                        {
+                                            breedData.map(breed =>
+                                                <>
+                                                    <a className="dropdown-item" id="breed" onClick={sortByValue}>{breed}</a>
+                                                </>
+                                            )
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -115,8 +198,13 @@ const Home = () => {
                                         All
                                     </button>
                                     <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a className="dropdown-item" href="#">Daun 1</a>
-                                        <a className="dropdown-item" href="#">Ne daun 2</a>
+                                        {
+                                            genderData.map(gender =>
+                                                <>
+                                                    <a className="dropdown-item" id="sex" onClick={sortByValue}>{gender}</a>
+                                                </>
+                                            )
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -124,7 +212,9 @@ const Home = () => {
                     </div>
                     <div className="col actions-wrapper g-0">
                         <div className="content-row content-create-wrapper row align-items-center">
-                            <button type="button" className="btn-primary">Create adv</button>
+                            <Link to="ad/create">
+                                <button type="button" className="btn-primary">Create adv</button>
+                            </Link>
                         </div>
                         <div className="content-row dropdown content-filter-wrapper row ">
                             <button className="btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"

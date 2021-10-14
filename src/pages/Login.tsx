@@ -12,12 +12,7 @@ const Login = () => {
         e.preventDefault()
 
         const rawResponse = await fetch("http://localhost:8080/auth/signin", {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            // credentials: "include",
+            method: "POST",
             body: JSON.stringify({
                 username,
                 password
@@ -32,7 +27,7 @@ const Login = () => {
     }
 
     if (redirect){
-        return <Redirect to="/"/>
+        return <Redirect to="/ad"/>
     }
 
     return (

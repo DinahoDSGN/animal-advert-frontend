@@ -27,7 +27,7 @@ const ProfileSettings = (props: {
             email: email,
         })
 
-        // window.location.reload()
+        window.location.reload()
     }
 
     return (
