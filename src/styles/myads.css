@@ -21,7 +21,7 @@
     margin-top: 30px;
 }
 
-.adv-wrapper {
+.adv-my-wrapper {
     min-height: 160px;
     width: auto;
     padding: 10px;
@@ -34,17 +34,17 @@
     padding: 10px;
 }
 
-.block-photo {
+.block-my-photo {
     padding: 0;
     cursor: pointer;
 }
 
-.block-photo img {
+.block-my-photo img {
     height: 140px;
     width: 140px;
 }
 
-.block-info {
+.block-my-info {
     padding: 5px 0px 0px 0px;
 }
 
@@ -67,7 +67,7 @@
     color: var(--text-grey);
 }
 
-.adv-location {
+.adv-my-location {
     padding: 0px;
 }
 

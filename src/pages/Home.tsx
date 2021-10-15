@@ -5,7 +5,6 @@ import iconGrid from '../img/icons/menu-grid.png';
 import axios from 'axios';
 import '../styles/home.css';
 import AdWrapper from "../components/AdWrapper";
-import AdCreate from "../components/AdCreate";
 import {Link, Redirect} from 'react-router-dom';
 
 const Home = () => {
@@ -14,10 +13,14 @@ const Home = () => {
 
     const [typeData, setTypeData] = useState([])
     const [breedData, setBreedData] = useState([])
+    const [colorData, setColorData] = useState([])
     const [genderData, setGenderData] = useState([])
+    const [vaccinatedData, setVaccinatedData] = useState([])
+    const [spayedData, setSpayedData] = useState([])
+    const [passportData, setPassportData] = useState([])
 
-    const [moneyFrom, setMoneyFrom] = useState("")
-    const [moneyTo, setMoneyTo] = useState("")
+    const [moneyFrom, setMoneyFrom] = useState("0")
+    const [moneyTo, setMoneyTo] = useState("0")
 
     useEffect(() => {
         (
@@ -25,20 +28,23 @@ const Home = () => {
                 await axios.get("http://localhost:8080/api/adv/all")
                     .then(res => {
                         setPosts(res.data["data"])
-                        sortByUniqueKeys({posts: posts}, "breed")
-                        sortByUniqueKeys({posts: posts}, "gender")
                         sortByUniqueKeys({posts: posts}, "type")
+                        sortByUniqueKeys({posts: posts}, "breed")
+                        sortByUniqueKeys({posts: posts}, "color")
+                        sortByUniqueKeys({posts: posts}, "gender")
+                        sortByUniqueKeys({posts: posts}, "vaccinated")
+                        sortByUniqueKeys({posts: posts}, "spayed")
+                        sortByUniqueKeys({posts: posts}, "passport")
                         setUnsortedPosts(posts)
                     })
             }
+
         )()
     }, [])
 
-    if (parseInt(moneyFrom, 10) >= 0 && parseInt(moneyTo, 10) >= parseInt(moneyFrom, 10)) {
-        const rangedPosts = sortByPriceRange(parseInt(moneyFrom, 10), parseInt(moneyTo, 10))
-        setPosts(rangedPosts)
-        setMoneyFrom('')
-        setMoneyTo('')
+    console.log(moneyFrom + " " + moneyTo)
+    if (parseInt(moneyFrom, 10) > 0 && parseInt(moneyTo, 10) > parseInt(moneyFrom, 10)) {
+        setTimeout(() => sortByPriceRange(parseInt(moneyFrom, 10), parseInt(moneyTo, 10)), 1000)
     }
 
     function sortByUniqueKeys({posts}: { posts: any }, val: string) {
@@ -47,10 +53,17 @@ const Home = () => {
             for (let i = 0; i < posts.length; i++) temp[i] = posts[i]["animal"]["type"]
             setTypeData(Array.from(new Set(temp)))
         }
+
         if (val === "breed") {
-            for (let i = 0; i < posts.length; i++) temp[i] = posts[i]["animal"]["type"]["name"]
+            for (let i = 0; i < posts.length; i++) temp[i] = posts[i]["animal"]["breed"]["name"]
             setBreedData(Array.from(new Set(temp)))
         }
+
+        if (val === "color") {
+            for (let i = 0; i < posts.length; i++) temp[i] = posts[i]["animal"]["color"]
+            setColorData(Array.from(new Set(temp)))
+        }
+
         if (val === "gender") {
             for (let i = 0; i < posts.length; i++) {
                 if (posts[i]["animal"]["gender"] === true) {
@@ -62,21 +75,48 @@ const Home = () => {
             }
             setGenderData(Array.from(new Set(temp)))
         }
+
+        if (val === "vaccinated") {
+            for (let i = 0; i < posts.length; i++) {
+                if (posts[i]["animal"]["vaccinated"] === true) {
+                    temp[i] = "Yes"
+                } else {
+                    temp[i] = "No"
+                }
+
+            }
+            setVaccinatedData(Array.from(new Set(temp)))
+        }
+
+        if (val === "spayed") {
+            for (let i = 0; i < posts.length; i++) {
+                if (posts[i]["animal"]["spayed"] === true) {
+                    temp[i] = "Yes"
+                } else {
+                    temp[i] = "No"
+                }
+
+            }
+            setSpayedData(Array.from(new Set(temp)))
+        }
+
+        if (val === "passport") {
+            for (let i = 0; i < posts.length; i++) {
+                if (posts[i]["animal"]["passport"] === true) {
+                    temp[i] = "Yes"
+                } else {
+                    temp[i] = "No"
+                }
+
+            }
+            setPassportData(Array.from(new Set(temp)))
+        }
     }
 
     function sortByPriceRange(f: number, t: number) {
-        let arr = [] as any
-        [...posts].map(post => {
-            if (post["animal"]["price"] >= f &&
-                post["animal"]["price"] <= t) {
-                arr.push(post)
-            }
-        })
-
-    }
-
-    const createAdHandler = () => {
-
+        makeRequestWithParam("price", f + "-" + t)
+        setMoneyTo("0")
+        setMoneyFrom("0")
     }
 
     const sortByPriceDesc = () => {
@@ -99,47 +139,75 @@ const Home = () => {
 
         let param = e.currentTarget
 
-        if (param.id == "sex"){
-            await axios.get(("http://localhost:8080/api/adv/sort?sex=" + param.textContent).toLowerCase(), {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-                .then(res => {
-                    setPosts(res.data["data"])
-                })
+        // if (param.id == "sex"){
+        //     await axios.get(("http://localhost:8080/api/adv/sort?sex=" + param.textContent).toLowerCase(), {
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         }
+        //     })
+        //         .then(res => {
+        //             setPosts(res.data["data"])
+        //         })
+        // }
+        //
+        // if (param.id == "specify"){
+        //     await axios.get(("http://localhost:8080/api/adv/sort?specify=" + param.textContent).toLowerCase(), {
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         }
+        //     })
+        //         .then(res => {
+        //             setPosts(res.data["data"])
+        //         })
+        // }
+
+        if (param.id == "specify") {
+            makeRequestWithParam(param.id, param.textContent)
         }
 
-        if (param.id == "specify"){
-            await axios.get(("http://localhost:8080/api/adv/sort?specify=" + param.textContent).toLowerCase(), {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-                .then(res => {
-                    setPosts(res.data["data"])
-                })
+        if (param.id == "breed") {
+            makeRequestWithParam(param.id, param.textContent)
         }
 
-        if (param.id == "breed"){
-            await axios.get(("http://localhost:8080/api/adv/sort?breed=" + param.textContent).toLowerCase(), {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-                .then(res => {
-                    setPosts(res.data["data"])
-                })
+        if (param.id == "color") {
+            makeRequestWithParam(param.id, param.textContent)
+        }
+
+        if (param.id == "sex") {
+            makeRequestWithParam(param.id, param.textContent)
+        }
+
+        if (param.id == "vaccinated") {
+            makeRequestWithParam(param.id, param.textContent)
+        }
+
+        if (param.id == "spayed") {
+            makeRequestWithParam(param.id, param.textContent)
+        }
+
+        if (param.id == "passport") {
+            makeRequestWithParam(param.id, param.textContent)
         }
 
 
     }
 
+    async function makeRequestWithParam(value: string | null, id: string | null) {
+        await axios.get(("http://localhost:8080/api/adv/sort?" + value + "=" + id).toLowerCase(), {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(res => {
+                setPosts(res.data["data"])
+            })
+    }
+
     return (
-        <div className="content-wrapper d-flex justify-content-center">
-            <div className="content col-7 row justify-content-center">
-                <div className="content-wrapper-header row">
-                    <div className="col-9 row filter-wrapper g-0">
+        <div className="content-wrapper d-flex justify-content-center g-0">
+            <div className="content col-7 row justify-content-center g-0">
+                <div className="content-wrapper-header row g-0">
+                    <div className="col-10 row filter-wrapper g-0">
                         <span id="filter-text">Filters</span>
                         <div className="filter-properties d-flex">
                             <div className="filter row g-0" style={{width: "130px"}}>
@@ -154,7 +222,8 @@ const Home = () => {
                                         {
                                             typeData.map(type =>
                                                 <>
-                                                    <a className="dropdown-item" id="specify" onClick={sortByValue}>{type}</a>
+                                                    <a className="dropdown-item" id="specify"
+                                                       onClick={sortByValue}>{type}</a>
                                                 </>
                                             )
                                         }
@@ -165,10 +234,10 @@ const Home = () => {
                                 <span id="filter-head">Price</span>
                                 <input type="search" className="form-control" placeholder="From" aria-label="Search"
                                        aria-describedby="search-addon"
-                                       onChange={e => setMoneyFrom(e.target.value.toLowerCase)}/>
+                                       onChange={e => setMoneyFrom(e.target.value)}/>
                                 <input type="search" className="form-control" placeholder="To" aria-label="Search"
                                        aria-describedby="search-addon"
-                                       onChange={e => setMoneyTo(e.target.value.toLowerCase)}/>
+                                       onChange={e => setMoneyTo(e.target.value)}/>
                             </div>
                             <div className="filter row g-0" style={{width: "130px"}}>
                                 <span id="filter-head">Breed</span>
@@ -182,7 +251,8 @@ const Home = () => {
                                         {
                                             breedData.map(breed =>
                                                 <>
-                                                    <a className="dropdown-item" id="breed" onClick={sortByValue}>{breed}</a>
+                                                    <a className="dropdown-item" id="breed"
+                                                       onClick={sortByValue}>{breed}</a>
                                                 </>
                                             )
                                         }
@@ -201,7 +271,88 @@ const Home = () => {
                                         {
                                             genderData.map(gender =>
                                                 <>
-                                                    <a className="dropdown-item" id="sex" onClick={sortByValue}>{gender}</a>
+                                                    <a className="dropdown-item" id="sex"
+                                                       onClick={sortByValue}>{gender}</a>
+                                                </>
+                                            )
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="filter row g-0" style={{width: "130px"}}>
+                                <span id="filter-head">Vaccinated</span>
+                                <div className="content-row dropdown content-filter-wrapper row">
+                                    <button className="btn-secondary dropdown-toggle" type="button"
+                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                        All
+                                    </button>
+                                    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        {
+                                            vaccinatedData.map(vaccinated =>
+                                                <>
+                                                    <a className="dropdown-item" id="vaccinated"
+                                                       onClick={sortByValue}>{vaccinated}</a>
+                                                </>
+                                            )
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="filter row g-0" style={{width: "130px"}}>
+                                <span id="filter-head">Spayed</span>
+                                <div className="content-row dropdown content-filter-wrapper row">
+                                    <button className="btn-secondary dropdown-toggle" type="button"
+                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                        All
+                                    </button>
+                                    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        {
+                                            spayedData.map(spayed =>
+                                                <>
+                                                    <a className="dropdown-item" id="spayed"
+                                                       onClick={sortByValue}>{spayed}</a>
+                                                </>
+                                            )
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="filter row g-0" style={{width: "130px"}}>
+                                <span id="filter-head">Passport</span>
+                                <div className="content-row dropdown content-filter-wrapper row">
+                                    <button className="btn-secondary dropdown-toggle" type="button"
+                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                        All
+                                    </button>
+                                    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        {
+                                            passportData.map(passport =>
+                                                <>
+                                                    <a className="dropdown-item" id="passport"
+                                                       onClick={sortByValue}>{passport}</a>
+                                                </>
+                                            )
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="filter row g-0" style={{width: "130px"}}>
+                                <span id="filter-head">Color</span>
+                                <div className="content-row dropdown content-filter-wrapper row">
+                                    <button className="btn-secondary dropdown-toggle" type="button"
+                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                        All
+                                    </button>
+                                    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        {
+                                            colorData.map(color =>
+                                                <>
+                                                    <a className="dropdown-item" id="color"
+                                                       onClick={sortByValue}>{color}</a>
                                                 </>
                                             )
                                         }
@@ -238,16 +389,16 @@ const Home = () => {
                         </span>
                         </div>
                     </div>
-                    <div className="content-view-wrapper align-items-center col row g-0">
-                        <div className="form-group d-flex">
-                            <button id="menu-burger" className="submit-btn btn btn-primary" type="submit">
-                                <img id="menu-icon" className="col icon-color" src={iconBurger}/>
-                            </button>
-                            <button id="menu-grid" className="submit-btn btn btn-primary" type="submit">
-                                <img id="menu-icon" className="col icon-color" src={iconGrid}/>
-                            </button>
-                        </div>
-                    </div>
+                    {/*<div className="content-view-wrapper align-items-center col row g-0">*/}
+                    {/*    <div className="form-group d-flex">*/}
+                    {/*        <button id="menu-burger" className="submit-btn btn btn-primary" type="submit">*/}
+                    {/*            <img id="menu-icon" className="col icon-color" src={iconBurger}/>*/}
+                    {/*        </button>*/}
+                    {/*        <button id="menu-grid" className="submit-btn btn btn-primary" type="submit">*/}
+                    {/*            <img id="menu-icon" className="col icon-color" src={iconGrid}/>*/}
+                    {/*        </button>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
                 </section>
                 <div className="content-wrapper-content row g-0">
 

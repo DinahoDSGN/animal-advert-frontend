@@ -28,6 +28,11 @@
     border-radius: 10px;
 }
 
+.row{
+    --bs-gutter-x: 0px!important;
+    --bs-gutter-y: 0px!important;
+}
+
 h1,
 h2,
 h3,
@@ -58,6 +63,8 @@ body {
 .container {
     width: 100%;
     height: 100%;
+    margin-left: 13%;
+    margin-right: 7%;
 }
 
 .container-fluid {
@@ -72,8 +79,7 @@ body {
 }
 
 .content {
-    left: 100px;
-    width: 70%;
+    width: 90%;
     position: relative;
     margin-top: 20px;
 }

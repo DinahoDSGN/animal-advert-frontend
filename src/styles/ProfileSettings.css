@@ -56,12 +56,12 @@
     padding: 5px 10px;
 }
 
-.form-group {
+.form-group-ps {
     padding: 0px 0px 20px 10px;
     width: 100%;
 }
 
-.form-group label {
+.form-group-ps label {
     font-style: normal;
     font-weight: 500;
     font-size: 11px;
@@ -76,7 +76,7 @@ form span a {
     color: var(--grey);
 }
 
-.form-control {
+.form-control-ps {
     width: 200px;
     height: 30px;
     border: 0;

@@ -34,17 +34,17 @@ const MyAds = (props: { userId: number }) => {
 
                     {
                         posts.map(post =>
-                            <div className="adv-wrapper row-auto g-0">
+                            <div className="adv-my-wrapper row-auto g-0">
                                 <Link to={"ad/" + post["ad_id"]}>
-                                    <div className="block-photo row-auto">
+                                    <div className="block-my-photo row-auto">
                                         <img src={profilePhoto} alt=""/>
                                     </div>
-                                    <div className="block-info col-9">
+                                    <div className="block-my-info col-9">
                                         <div className="adv-title" data-toggle="modal"
                                              data-target=".bd-example-modal-lg">
                                             <span id="name">{post["title"]}</span>
                                         </div>
-                                        <div className="adv-location">
+                                        <div className="adv-my-location">
                             <span className="location">
                                 <img id="adv-icon" className="col icon-color" src={iconPlaceholder}/>
                                 <span id="location">{post["location"]}</span>

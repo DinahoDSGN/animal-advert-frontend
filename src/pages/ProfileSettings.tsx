@@ -25,7 +25,26 @@ const ProfileSettings = (props: {
             username: username,
             password: password,
             email: email,
-        })
+        },
+            {
+                withCredentials: false,
+            })
+
+        // const rawResponse = await fetch("http://localhost:8080/api/user/" + props.userId, {
+        //     method: 'PUT',
+        //     // mode: "no-cors",
+        //     headers: {
+        //         'Content-type': 'application/json; charset=UTF-8'
+        //     },
+        //     body: JSON.stringify({
+        //         name: name,
+        //         lastname: lastname,
+        //         username: username,
+        //         password: password,
+        //         email: email,
+        //     })
+        // })
+        // const content = await rawResponse.json();
 
         window.location.reload()
     }
@@ -36,7 +55,7 @@ const ProfileSettings = (props: {
                 <div className="content-wrapper-content row g-0">
                     <div className="settings row justify-content-center g-0">
 
-                        <form onSubmit={submit}>
+                        <form onSubmit={submit} method="put">
                             <div className="settings-wrapper row g-0">
                                 <div className="block profile-info row g-0">
                                     <div className="profile">
@@ -55,7 +74,7 @@ const ProfileSettings = (props: {
                                 </div>
                                 <div className="block personal-data row g-0">
                                     <span id="title">Personal data</span>
-                                    <div className="form-group row justify-content-center g-0">
+                                    <div className="form-group-ps row justify-content-center g-0">
                                         <section className="row g-0">
                                             <section className="col">
                                                 <label>
@@ -69,7 +88,7 @@ const ProfileSettings = (props: {
                                                 <label>
                                                     Lastname:
                                                 </label>
-                                                <input className="form-control" placeholder="Change your lastname"
+                                                <input className="form-control-ps" placeholder="Change your lastname"
                                                        type="name"
                                                        onChange={e => setLastname(e.target.value)}/>
                                             </section>
@@ -119,7 +138,7 @@ const ProfileSettings = (props: {
                                         </section>
                                     </div>
                                 </div>
-                                <div className="block form-group row mt-1 g-0">
+                                <div className="block form-group-ps row mt-1 g-0">
                                     <button className="submit-btn btn btn-primary" type="submit">
                                         Update
                                     </button>

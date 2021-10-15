@@ -54,16 +54,6 @@ const Sidebar = (props: { username: string }) => {
                         </li>
                     </Link>
                 </ul>
-                <span className="heads">Services</span>
-                <ul className="sidebar-nav">
-                    <Link to="/ad">
-                        <li className="sidebar-item">
-                            <img id="sidebar-icon" className="icon-color"
-                                 src={iconAdHome}/>
-                            <a href="">Animal Ad</a>
-                        </li>
-                    </Link>
-                </ul>
                 <span className="heads">Menu</span>
                 <ul className="sidebar-nav">
                     <Link to="/myads">

@@ -10,7 +10,7 @@
 
 .actions-wrapper {
     position: relative;
-    padding: 5px;
+    padding: 5px 0 0 5px;
     height: 100%;
 }
 
@@ -135,7 +135,6 @@
 
 .content-search-wrapper {
     position: relative;
-    padding: 5px;
     margin-top: 15px;
     margin-bottom: 15px;
 }
@@ -254,6 +253,7 @@
 }
 
 .location #location {
+    margin-left: 2px;
     font-weight: 300;
     font-size: 11px;
     line-height: 9px;
@@ -270,11 +270,13 @@
 }
 
 .spec-block #spec-type {
+    margin-left: 3px;
     font-weight: normal;
     font-size: 11px;
 
     color: var(--text-white);
 }
+
 
 .spec-block #spec-info {
     font-weight: normal;
@@ -288,6 +290,7 @@
 }
 
 .adv-desc .desc {
+    margin-left: 3px;
     font-style: normal;
     font-weight: normal;
     font-size: 11px;
